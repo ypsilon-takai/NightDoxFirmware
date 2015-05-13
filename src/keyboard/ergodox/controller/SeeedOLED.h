@@ -25,14 +25,17 @@
 #ifndef SeeedOLED_data_H
 #define SeeedOLED_data_H
 
-// SeeedOLED Instruction set addresses
+#include <stdbool.h>
+#include <stdint.h>
+//#include "../matrix.h"
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include <WProgram.h>
-#include "Wire.h"
-#endif
+// --------------------------------------------------------------------
+
+uint8_t oled_init(void);
+uint8_t oled_update(void);
+
+
+// SeeedOLED Instruction set addresses
 
 #define SeeedOLED_Max_X                 127 //128 Pixels
 #define SeeedOLED_Max_Y                 63  //64  Pixels
@@ -44,6 +47,10 @@
 #define SeeedOLED_Address               0x3c
 #define SeeedOLED_Command_Mode          0x80
 #define SeeedOLED_Data_Mode             0x40
+#define SeeedOLED_Segment_Normal_Cmd    0xA0
+#define SeeedOLED_Segment_Remap_Cmd     0xA1
+#define SeeedOLED_Com_Normal_Cmd        0xC0
+#define SeeedOLED_Com_Remap_Cmd         0xC8
 #define SeeedOLED_Display_Off_Cmd       0xAE
 #define SeeedOLED_Display_On_Cmd        0xAF
 #define SeeedOLED_Normal_Display_Cmd    0xA6
@@ -65,41 +72,42 @@
 #define Scroll_256Frames        0x3
 
 
-class SeeedOLED {
+/* class SeeedOLED { */
 
-public:
+/* public: */
 
-char addressingMode;
+/* char addressingMode; */
 
 
-void init(void);
+uint8_t SeeedOLED_init(void);
 
-void setNormalDisplay();
-void setInverseDisplay();
+void SeeedOLED_setNormalDisplay(void);
+void SeeedOLED_setInverseDisplay(void);
 
-void sendCommand(unsigned char command);
-void sendData(unsigned char Data);
+uint8_t SeeedOLED_sendCommand(unsigned char command);
+uint8_t SeeedOLED_sendData(unsigned char Data);
 
-void setPageMode();
-void setHorizontalMode();
+void SeeedOLED_setPageMode(void);
+void SeeedOLED_setHorizontalMode(void);
 
-void setTextXY(unsigned char Row, unsigned char Column);
-void clearDisplay();
-void setBrightness(unsigned char Brightness);
-void putChar(unsigned char c);
-void putString(const char *String);
-unsigned char putNumber(long n);
-unsigned char putFloat(float floatNumber,unsigned char decimal);
-unsigned char putFloat(float floatNumber);
-void drawBitmap(unsigned char *bitmaparray,int bytes);
+void SeeedOLED_setTextXY(unsigned char Row, unsigned char Column);
+void SeeedOLED_clearDisplay(void);
+void SeeedOLED_setBrightness(unsigned char Brightness);
+void SeeedOLED_putChar(unsigned char c);
+void SeeedOLED_putString(const char *String);
+void SeeedOLED_putByteAsHex(unsigned char c);
+unsigned char SeeedOLED_putNumber(long n);
+unsigned char SeeedOLED_putFloatD(float floatNumber,unsigned char decimal);
+unsigned char SeeedOLED_putFloat(float floatNumber);
+void SeeedOLED_drawBitmap(unsigned char *bitmaparray,int bytes);
 
-void setHorizontalScrollProperties(bool direction,unsigned char startPage, unsigned char endPage, unsigned char scrollSpeed);
-void activateScroll();
-void deactivateScroll();
+void SeeedOLED_setHorizontalScrollProperties(bool direction,unsigned char startPage, unsigned char endPage, unsigned char scrollSpeed);
+void SeeedOLED_activateScroll(void);
+void SeeedOLED_deactivateScroll(void);
 
-};
+/* }; */
 
-extern SeeedOLED SeeedOled;  // SeeedOLED object 
+/* extern SeeedOLED SeeedOled;  // SeeedOLED object  */
 
 #endif
 

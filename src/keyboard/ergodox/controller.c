@@ -12,6 +12,7 @@
 #include "./matrix.h"
 #include "./controller/mcp23018--functions.h"
 #include "./controller/teensy-2-0--functions.h"
+#include "./controller/SeeedOLED.h"
 
 // ----------------------------------------------------------------------------
 
@@ -24,6 +25,8 @@ uint8_t kb_init(void) {
 		return 1;
 	if (mcp23018_init())  // must be second
 		return 2;
+    if (oled_init())
+      return 3;
 
 	return 0;  // success
 }
@@ -37,6 +40,8 @@ uint8_t kb_update_matrix(bool matrix[KB_ROWS][KB_COLUMNS]) {
 		return 1;
 	if (mcp23018_update_matrix(matrix))
 		return 2;
+    if (oled_update())
+      return 3;
 
 	return 0;  // success
 }
