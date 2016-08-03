@@ -1,6 +1,11 @@
-# [Firmware][ergodox-firmware] for the [ErgoDox keyboard][]
+# [Firmware][NigntDoxFirmware] for the [NightDox keyboard][]
 
-The official website is [ergodox.org] (http://www.ergodox.org).  
+see : (https://github.com/naito7/NightDoxFirmware)
+forked from https://github.com/benblazak/ergodox-firmware
+
+github for hardware : (https://github.com/naito7/NightDox)
+
+The official website of ErgoDox is [ergodox.org] (http://www.ergodox.org).  
 Also see the [geekhack]
 (http://geekhack.org/showthread.php?22780-Interest-Check-Custom-split-ergo-keyboard)
 and [deskthority]
@@ -39,7 +44,7 @@ changed since this document was last properly updated:
   bug, and implemented workman-p.
 * Jacob McIntosh ([nacitar](https://github.com/nacitar)) added
   `kbfun_layer_toggle` functions.
-
+* naito7 (https://github.com/naito7/NightDox)
 
 
 ### Table of Contents
