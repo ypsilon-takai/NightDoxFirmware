@@ -45,7 +45,8 @@
 
 	void main_exec_key (void);
 
-	uint8_t main_layers_peek          (uint8_t offset);
+    uint8_t main_layers_get_head(void);
+    uint8_t main_layers_peek          (uint8_t offset);
 	uint8_t main_layers_peek_sticky   (uint8_t offset);
 	uint8_t main_layers_push          (uint8_t layer, uint8_t sticky);
 	void    main_layers_pop_id        (uint8_t id);

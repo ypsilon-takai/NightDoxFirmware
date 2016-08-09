@@ -191,6 +191,11 @@ void main_exec_key(void) {
 		main_layers_pop_id(layers_head);
 }
 
+
+uint8_t main_layers_get_head(void){
+  return layers_head;
+}
+
 /*
  * peek()
  *
@@ -214,6 +219,7 @@ uint8_t main_layers_peek_sticky(uint8_t offset) {
 
 	return 0;  // default, or error
 }
+
 
 /*
  * push()
