@@ -55,10 +55,10 @@ SCRIPTS := build-scripts
 
 .PHONY: all clean checkin build-dir firmware dist zip zip-all
 
-all: dist
+all: firm_only
 
 clean:
-	git clean -dX  # remove ignored files and directories
+	git clean -dfX  # remove ignored files and directories
 	-rm -r '$(BUILD)'
 
 checkin:
@@ -95,6 +95,11 @@ $(ROOT)/firmware--layout.html: \
 		--ui-info-file '$(ROOT)/firmware--ui-info.json' \
 	) > '$@'
 
+firm_only: \
+	build-dir \
+	$(ROOT)/firmware.hex \
+	$(ROOT)/firmware.eep \
+	$(ROOT)/firmware.map
 
 dist: \
 	checkin \
