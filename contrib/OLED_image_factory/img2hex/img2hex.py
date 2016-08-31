@@ -1,4 +1,4 @@
-#/usr/bin/python
+#!/usr/bin/python
 
 # img2hex.py
 # image converte for SSD1308 OLED display
@@ -39,7 +39,7 @@ def convert_to_hex (image_in):
             data = ""
             for pix in range(7, -1, -1):
                 v = img.getpixel((col, page * 8 + pix))
-                if v > 128:
+                if v < 128:
                     data += "1"
                 else:
                     data += "0"
