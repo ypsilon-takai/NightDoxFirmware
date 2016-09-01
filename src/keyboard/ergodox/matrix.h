@@ -92,9 +92,9 @@
 					    k03,k02,k01,		\
 									\
 			/* right hand, spatial positions */		\
-			    k57,k58,k59,k5A,k5B,k5C,k5D,k0D		\
-			    k47,k48,k49,k4A,k4B,k4C,k4D,k1D		\
-			        k38,k39,k3A,k3B,k3C,k3D,k37		\
+			    k57,k58,k59,k5A,k5B,k5C,k5D,k0D,		\
+			    k47,k48,k49,k4A,k4B,k4C,k4D,k1D,		\
+			    k38,k39,k3A,k3B,k3C,k3D,k37,			\
 			    k27,k28,k29,k2A,k2B,k2C,k2D,		\
 			            k19,k1A,k1B,k1C,    		\
 			k07,k08,					\
