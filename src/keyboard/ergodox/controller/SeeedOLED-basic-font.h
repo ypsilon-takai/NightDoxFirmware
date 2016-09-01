@@ -9,6 +9,8 @@
 #ifndef SEEDOLED_BASIC_FONT_H
 #define SEEDOLED_BASIC_FONT_H
 
+#include <avr/pgmspace.h>
+
 // This font be freely used without any restriction(It is placed in public domain)
 const unsigned char BasicFont[][8] PROGMEM=
   {
