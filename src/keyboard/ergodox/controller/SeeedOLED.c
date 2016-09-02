@@ -22,14 +22,14 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-/* #include "Wire.h" */
-#include "SeeedOLED.h"
-#include "SeeedOLED-basic-font.h"
-
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include <util/twi.h>
+
+#include "SeeedOLED.h"
+#include "SeeedOLED-basic-font.h"
+#include "SeeedOLED-ErgoDox-logo.h"
 
 #include "../../../lib/twi.h"  // `TWI_FREQ` defined in "teensy-2-0.c"
 #include "../../../main.h"
@@ -37,13 +37,8 @@
 
 #include <avr/pgmspace.h>
 
-/* #include <avr/pgmspace.h> */
-
-// 8x8 Font ASCII 32 - 127 Implemented
-// Users can modify this to support more characters(glyphs)
-// BasicFont is placed in code memory.
-
 char addressingMode;
+
 
 uint8_t SeeedOLED_sendCommand(unsigned char command)
 {
@@ -372,9 +367,13 @@ uint8_t prev_keyboard_leds;
 uint8_t prev_keyboard_modifier_keys;
 uint8_t prev_keyboard_keys[6];
 uint8_t prev_layers_state[16];
-unsigned char water_wheels[] = {
-  '-', '/', '|', '\\',
-};
+
+
+uint8_t oled_DispLogo(void){
+  SeeedOLED_drawBitmap(ErgodoxLogo, ErgodoxLogoSize);
+  return 0;
+}
+
 
 uint8_t oled_init(void){
   oled_counter = 0;
@@ -386,6 +385,7 @@ uint8_t oled_init(void){
     prev_keyboard_keys[i] = -1;
     
   SeeedOLED_init();
+  oled_DispLogo();
   SeeedOLED_setTextXY(7, 0);
   SeeedOLED_putString("Num");
   SeeedOLED_setTextXY(7, 5);
@@ -395,20 +395,28 @@ uint8_t oled_init(void){
 }
 
 
+unsigned char water_wheels[] = {
+  '-', '/', '|', '\\',
+};
+
+
 uint8_t oled_update(void){
+  uint8_t updated = 0;
   {
+    // display contents of layer stack
     uint8_t layers_state[16];
     for(int i=0; i<8; ++i){
       layers_state[i*2+0] = main_layers_peek(i);
       layers_state[i*2+1] = main_layers_peek_sticky(i);
     }
     if(memcmp(layers_state, prev_layers_state, 16)!=0){
+      updated += 1;
       uint8_t layers_head = main_layers_get_head();
       uint8_t i=0;
       for(; i<=layers_head; ++i){
-        SeeedOLED_setTextXY(0, i*2);
+        SeeedOLED_setTextXY(5, i*2);
         SeeedOLED_putNumber(main_layers_peek(i));
-        SeeedOLED_setTextXY(0, i*2+1);
+        SeeedOLED_setTextXY(5, i*2+1);
         SeeedOLED_putNumber(main_layers_peek_sticky(i));
       }
       for(; i<8; ++i){
@@ -418,11 +426,18 @@ uint8_t oled_update(void){
       memcpy(prev_layers_state, layers_state, 16);
     }
   }
+
+  // Display keyboard data to send via usb
   if(memcmp(keyboard_keys, prev_keyboard_keys, 6)!=0 ||
      prev_keyboard_modifier_keys != keyboard_modifier_keys){
-    SeeedOLED_setTextXY(1, 0);
+    updated += 1;
+    SeeedOLED_setTextXY(6, 0);
 
+    // Mod keys
     SeeedOLED_putByteAsHex(keyboard_modifier_keys);
+
+    // keys
+    SeeedOLED_putString(" >");
     for(int i=0; i<6; ++i)
       SeeedOLED_putByteAsHex(keyboard_keys[i]);
     
@@ -431,19 +446,27 @@ uint8_t oled_update(void){
     prev_keyboard_modifier_keys = keyboard_modifier_keys;
   }
 
+  // numlock state
   if((prev_keyboard_leds^keyboard_leds)&(1<<0)){
+    updated += 1;
     SeeedOLED_setTextXY(7, 3);
     SeeedOLED_putChar(keyboard_leds & (1<<0) ? 'O' : 'X');
   }
+  // capslock state
   if((prev_keyboard_leds^keyboard_leds)&(1<<1)){
+    updated += 1;
     SeeedOLED_setTextXY(7, 9);
     SeeedOLED_putChar(keyboard_leds & (1<<1) ? 'O' : 'X');
   }
   prev_keyboard_leds = keyboard_leds;
+
+  // if something is updated, rotate the wheel
+  if (updated > 0) {
+    SeeedOLED_setTextXY(7, 15);
+    SeeedOLED_putChar(water_wheels[oled_counter++]);
+    if(oled_counter>=4)
+      oled_counter=0;
+  }
   
-  SeeedOLED_setTextXY(7, 15);
-  SeeedOLED_putChar(water_wheels[oled_counter++]);
-  if(oled_counter>=4)
-    oled_counter=0;
   return 0;
 }

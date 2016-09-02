@@ -11,6 +11,9 @@
 
 #include <avr/pgmspace.h>
 
+// 8x8 Font ASCII 32 - 127 Implemented
+// Users can modify this to support more characters(glyphs)
+// BasicFont is placed in code memory.
 // This font be freely used without any restriction(It is placed in public domain)
 const unsigned char BasicFont[][8] PROGMEM=
   {
